@@ -8,7 +8,25 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MyWidget();
+    return new MaterialApp(
+      home: BackgroundWidget()
+    );
+  }
+}
+
+class BackgroundWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/daily_bg.png"),
+            fit: BoxFit.cover
+          )
+        ),
+      ),
+    );
   }
 }
 
