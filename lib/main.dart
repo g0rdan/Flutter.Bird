@@ -52,11 +52,8 @@ class EasingAnimationWidgetState extends State<EasingAnimationWidget>
               transform:
               Matrix4.translationValues(_animation.value * width, 0.0, 0.0),
               child: new Center(
-                  child: Container(
-                    width: 200.0,
-                    height: 200.0,
-                    color: Colors.black12,
-                  )),
+                child: Image.asset("assets/images/bottom_green_tube.png"),
+              )
             ));
       });
   }
