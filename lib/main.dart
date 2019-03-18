@@ -15,16 +15,21 @@ class MyApp extends StatelessWidget {
 class BackgroundWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      body: Container(
-        child: EasingAnimationWidget(),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/daily_bg.png"),
-            fit: BoxFit.cover
-          )
+    return GestureDetector(
+      onTap: () {
+        print("test");
+      },
+      child: Scaffold(
+        body: Container(
+          child: EasingAnimationWidget(),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/daily_bg.png"),
+              fit: BoxFit.cover
+            )
+          ),
         ),
-      ),
+      )
     );
   }
 }
@@ -51,8 +56,15 @@ class EasingAnimationWidgetState extends State<EasingAnimationWidget>
             child: Transform(
               transform:
               Matrix4.translationValues(_animation.value * width, 0.0, 0.0),
-              child: new Center(
-                child: Image.asset("assets/images/bottom_green_tube.png"),
+              child: new Align(
+                alignment: FractionalOffset.bottomCenter,
+                child: SizedBox(
+                  width: double.infinity,
+                  child: FittedBox(
+                    child: Image.asset("assets/images/ground.png"),
+                    fit: BoxFit.fill,
+                  )
+                ) 
               )
             ));
       });
@@ -67,7 +79,7 @@ class EasingAnimationWidgetState extends State<EasingAnimationWidget>
 
     _animation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
       parent: _controller,
-      curve: Curves.fastOutSlowIn,
+      curve: Curves.linear,
     ))..addStatusListener(handler);
   }
 
@@ -77,12 +89,12 @@ class EasingAnimationWidgetState extends State<EasingAnimationWidget>
       _controller.reset();
       _animation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
         parent: _controller,
-        curve: Curves.fastOutSlowIn,
+        curve: Curves.linear,
       ))
         ..addStatusListener((status) {
-          if (status == AnimationStatus.completed) {
-            Navigator.pop(context);
-          }
+          // if (status == AnimationStatus.completed) {
+          //   Navigator.pop(context);
+          // }
         });
       _controller.forward();
     }
