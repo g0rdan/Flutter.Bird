@@ -1,118 +1,33 @@
+import 'dart:ui' as ui;
+import 'package:flame/flame.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bird/game/game.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  Flame.audio.disableLog();
+  List<ui.Image> image = await Flame.images.loadAll(["sprite_2.png"]);
+  FlutterBirdGame flutterBirdGame = FlutterBirdGame(spriteImage: image[0]);
+  runApp(MaterialApp(
+    title: 'FlutterBirdGame',
+    home: Scaffold(
+      body: GameWrapper(flutterBirdGame),
+    ),
+  ));
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      home: BackgroundWidget()
-    );
-  }
+  Flame.util.addGestureRecognizer(new TapGestureRecognizer()
+    ..onTapDown = (TapDownDetails evt) => flutterBirdGame.onTap());
+
+  SystemChrome.setEnabledSystemUIOverlays([]);
 }
 
-class BackgroundWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        print("test");
-      },
-      child: Scaffold(
-        body: Container(
-          child: MovingBaseWidget(),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/daily_bg.png"),
-              fit: BoxFit.cover
-            )
-          ),
-        ),
-      )
-    );
-  }
-}
-
-class MovingBaseWidget extends StatefulWidget {
-  @override
-  MovingBaseWidgetState createState() => MovingBaseWidgetState();
-}
-
-class MovingBaseWidgetState extends State<MovingBaseWidget>
-    with TickerProviderStateMixin {
-
-  AnimationController _controller;
-  Animation _firtsAnimation;
-  Animation _secondAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    
-    _controller =
-        AnimationController(vsync: this, duration: Duration(seconds: 2));
-    
-    _firtsAnimation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.linear,
-    ));//..addListener(handler);
-
-    _secondAnimation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.linear,
-    ));
-  }
-
-  void handler(status) {
-    if (status == AnimationStatus.completed) {
-      _firtsAnimation.removeStatusListener(handler);
-      _controller.reset();
-      _firtsAnimation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-        parent: _controller,
-        curve: Curves.linear,
-      ))
-        ..addStatusListener((status) {
-          // if (status == AnimationStatus.completed) {
-          //   Navigator.pop(context);
-          // }
-        });
-      _controller.forward();
-    }
-  }
+class GameWrapper extends StatelessWidget {
+  final FlutterBirdGame tRexGame;
+  GameWrapper(this.tRexGame);
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
-    _controller.forward();
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (BuildContext context, Widget child) {
-        return Container(
-            child: Transform(
-              transform:
-              Matrix4.translationValues(_firtsAnimation.value * width, 0.0, 0.0),
-              child: new Align(
-                alignment: FractionalOffset.bottomCenter,
-                child: SizedBox(
-                  width: double.infinity,
-                  child: FittedBox(
-                    child: Image.asset("assets/images/ground.png"),
-                    fit: BoxFit.fill,
-                  )
-                ) 
-              )
-            ));
-      });
-  }
-
-  
-
-  
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+    return tRexGame.widget;
   }
 }
