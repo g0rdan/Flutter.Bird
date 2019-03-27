@@ -1,13 +1,12 @@
 import 'dart:ui' as ui;
 import 'package:flame/flame.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bird/game/game.dart';
 
 void main() async {
   Flame.audio.disableLog();
-  List<ui.Image> image = await Flame.images.loadAll(["sprite_2.png"]);
+  List<ui.Image> image = await Flame.images.loadAll(["sprite.png"]);
   FlutterBirdGame flutterBirdGame = FlutterBirdGame(spriteImage: image[0]);
   runApp(MaterialApp(
     title: 'FlutterBirdGame',
@@ -16,8 +15,8 @@ void main() async {
     ),
   ));
 
-  Flame.util.addGestureRecognizer(new TapGestureRecognizer()
-    ..onTapDown = (TapDownDetails evt) => flutterBirdGame.onTap());
+  // Flame.util.addGestureRecognizer(new TapGestureRecognizer()
+  //   ..onTapDown = (TapDownDetails evt) => flutterBirdGame.onTap());
 
   SystemChrome.setEnabledSystemUIOverlays([]);
 }

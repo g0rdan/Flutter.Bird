@@ -16,8 +16,8 @@ class Horizon extends PositionComponent with Resizable, ComposedComponent {
       spriteImage,
       width: HorizonDimensions.width,
       height: HorizonDimensions.height,
-      y: 104.0,
-      x: 2.0,
+      y: 0.0,
+      x: 0.0,
     );
 
     this.ground = HorizonGround(sprite);
