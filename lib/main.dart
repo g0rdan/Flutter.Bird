@@ -21,7 +21,7 @@ class BackgroundWidget extends StatelessWidget {
       },
       child: Scaffold(
         body: Container(
-          child: EasingAnimationWidget(),
+          child: MovingBaseWidget(),
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage("assets/images/daily_bg.png"),
@@ -34,16 +34,52 @@ class BackgroundWidget extends StatelessWidget {
   }
 }
 
-class EasingAnimationWidget extends StatefulWidget {
+class MovingBaseWidget extends StatefulWidget {
   @override
-  EasingAnimationWidgetState createState() => EasingAnimationWidgetState();
+  MovingBaseWidgetState createState() => MovingBaseWidgetState();
 }
 
-class EasingAnimationWidgetState extends State<EasingAnimationWidget>
+class MovingBaseWidgetState extends State<MovingBaseWidget>
     with TickerProviderStateMixin {
 
   AnimationController _controller;
-  Animation _animation;
+  Animation _firtsAnimation;
+  Animation _secondAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    
+    _controller =
+        AnimationController(vsync: this, duration: Duration(seconds: 2));
+    
+    _firtsAnimation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.linear,
+    ));//..addListener(handler);
+
+    _secondAnimation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.linear,
+    ));
+  }
+
+  void handler(status) {
+    if (status == AnimationStatus.completed) {
+      _firtsAnimation.removeStatusListener(handler);
+      _controller.reset();
+      _firtsAnimation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+        parent: _controller,
+        curve: Curves.linear,
+      ))
+        ..addStatusListener((status) {
+          // if (status == AnimationStatus.completed) {
+          //   Navigator.pop(context);
+          // }
+        });
+      _controller.forward();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +91,7 @@ class EasingAnimationWidgetState extends State<EasingAnimationWidget>
         return Container(
             child: Transform(
               transform:
-              Matrix4.translationValues(_animation.value * width, 0.0, 0.0),
+              Matrix4.translationValues(_firtsAnimation.value * width, 0.0, 0.0),
               child: new Align(
                 alignment: FractionalOffset.bottomCenter,
                 child: SizedBox(
@@ -70,35 +106,9 @@ class EasingAnimationWidgetState extends State<EasingAnimationWidget>
       });
   }
 
-  @override
-  void initState() {
-    super.initState();
+  
 
-    _controller =
-        AnimationController(vsync: this, duration: Duration(seconds: 2));
-
-    _animation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.linear,
-    ))..addStatusListener(handler);
-  }
-
-  void handler(status) {
-    if (status == AnimationStatus.completed) {
-      _animation.removeStatusListener(handler);
-      _controller.reset();
-      _animation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-        parent: _controller,
-        curve: Curves.linear,
-      ))
-        ..addStatusListener((status) {
-          // if (status == AnimationStatus.completed) {
-          //   Navigator.pop(context);
-          // }
-        });
-      _controller.forward();
-    }
-  }
+  
 
   @override
   void dispose() {
