@@ -1,18 +1,22 @@
 import 'dart:ui';
 import 'package:flame/game.dart';
+import 'package:flutter_bird/game/bird.dart';
 import 'package:flutter_bird/game/horizont.dart';
 
 enum FlutterBirdGameStatus { playing, waiting, gameOver }
 
 class FlutterBirdGame extends BaseGame {
   Horizon horizon;
+  Bird bird;
   FlutterBirdGameStatus status = FlutterBirdGameStatus.waiting;
 
   double timePlaying = 0.0;
 
   FlutterBirdGame({Image spriteImage}) {
     horizon = new Horizon(spriteImage);
-    this..add(horizon);
+    bird = new Bird(spriteImage);
+    this..add(horizon)..add(bird);
+
   }
 
   @override
