@@ -11,13 +11,16 @@ class FlutterBirdGame extends BaseGame {
 
     horizon = Horizon(spriteImage);
     bird = Bird(spriteImage);
-    bird.updatePisition(150, 150);
+    bird.setPosition(150, 150);
     this..add(horizon)..add(bird);
   }
 
   @override
   void update(double t) {
     bird.update(t);
-    // bird.x += t * 100;
+  }
+
+  void onTap() {
+    bird.jump();
   }
 }

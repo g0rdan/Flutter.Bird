@@ -7,8 +7,11 @@ import 'package:flame/components/composed_component.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter_bird/game/config.dart';
 
+enum BirdStatus { waiting, flying}
+
 class Bird extends PositionComponent with ComposedComponent {
   BirdGround ground;
+  BirdStatus status = BirdStatus.waiting;
 
   Bird(Image spriteImage)
   {
@@ -17,22 +20,22 @@ class Bird extends PositionComponent with ComposedComponent {
         spriteImage,
         width: Dimensions.birdWidth,
         height: Dimensions.birdHeight,
-        y: 491.0,
-        x: 3.0,
+        y: SpritesPostion.birdSprite1Y,
+        x: SpritesPostion.birdSprite1X,
       ),
       Sprite.fromImage(
         spriteImage,
         width: Dimensions.birdWidth,
         height: Dimensions.birdHeight,
-        y: 491.0,
-        x: 31.0,
+        y: SpritesPostion.birdSprite2Y,
+        x: SpritesPostion.birdSprite2X,
       ),
       Sprite.fromImage(
         spriteImage,
         width: Dimensions.birdWidth,
         height: Dimensions.birdHeight,
-        y: 491.0,
-        x: 59.0,
+        y: SpritesPostion.birdSprite3Y,
+        x: SpritesPostion.birdSprite3X,
       )
     ];
 
@@ -41,9 +44,20 @@ class Bird extends PositionComponent with ComposedComponent {
     this..add(ground);
   }
 
-  void updatePisition(double x, double y) {
+  void setPosition(double x, double y) {
     this.ground.x = x;
     this.ground.y = y;
+  }
+
+  void update(double t) {
+    if (status == BirdStatus.flying) {
+      this.ground.y += t * 100;
+      this.ground.update(t);
+    }
+  }
+
+  void jump() {
+    status = BirdStatus.flying;
   }
 }
 

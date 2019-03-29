@@ -1,5 +1,6 @@
 import 'dart:ui' as ui;
 import 'package:flame/flame.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bird/game/game.dart';
@@ -15,8 +16,8 @@ void main() async {
     ),
   ));
 
-  // Flame.util.addGestureRecognizer(new TapGestureRecognizer()
-  //   ..onTapDown = (TapDownDetails evt) => flutterBirdGame.onTap());
+  Flame.util.addGestureRecognizer(new TapGestureRecognizer()
+    ..onTapDown = (TapDownDetails evt) => flutterBirdGame.onTap());
 
   SystemChrome.setEnabledSystemUIOverlays([]);
 }
