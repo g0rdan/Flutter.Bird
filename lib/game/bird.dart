@@ -62,26 +62,27 @@ class Bird extends PositionComponent with ComposedComponent {
       if (counter <= tickStep) {
         counter++;
         flyingStatus = BirdFlyingStatus.up;
-        this.ground.y -= t * 100;  
         this.ground.angle -= 0.01;
+        this.ground.y -= 3;
       }
       else if (counter > tickStep && counter <= tickStep * 2) {
         counter++;
         flyingStatus = BirdFlyingStatus.down;
-        this.ground.y += t * 100;  
         this.ground.angle += 0.01;
+        this.ground.y += 3;
       }
       else{
         flyingStatus = BirdFlyingStatus.none;
+        status = BirdStatus.waiting;
         counter = 0;
       }
-      
       this.ground.update(t);
     }
   }
 
   void jump() {
     status = BirdStatus.flying;
+    counter = 0;
   }
 }
 
