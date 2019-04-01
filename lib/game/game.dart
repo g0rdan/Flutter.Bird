@@ -11,7 +11,7 @@ class FlutterBirdGame extends BaseGame {
 
     horizon = Horizon(spriteImage);
     bird = Bird(spriteImage);
-    bird.setPosition(150, 150);
+    bird.setPosition(150, 350);
     this..add(horizon)..add(bird);
   }
 

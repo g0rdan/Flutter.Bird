@@ -8,10 +8,14 @@ import 'package:flame/sprite.dart';
 import 'package:flutter_bird/game/config.dart';
 
 enum BirdStatus { waiting, flying}
+enum BirdFlyingStatus { up, down, none }
 
 class Bird extends PositionComponent with ComposedComponent {
   BirdGround ground;
   BirdStatus status = BirdStatus.waiting;
+  BirdFlyingStatus flyingStatus = BirdFlyingStatus.none;
+  int counter = 0;
+  int tickStep = 50;
 
   Bird(Image spriteImage)
   {
@@ -50,8 +54,28 @@ class Bird extends PositionComponent with ComposedComponent {
   }
 
   void update(double t) {
+    birdMovingProcess(t);
+  }
+
+  void birdMovingProcess(double t){
     if (status == BirdStatus.flying) {
-      this.ground.y += t * 100;
+      if (counter <= tickStep) {
+        counter++;
+        flyingStatus = BirdFlyingStatus.up;
+        this.ground.y -= t * 100;  
+        this.ground.angle -= 0.01;
+      }
+      else if (counter > tickStep && counter <= tickStep * 2) {
+        counter++;
+        flyingStatus = BirdFlyingStatus.down;
+        this.ground.y += t * 100;  
+        this.ground.angle += 0.01;
+      }
+      else{
+        flyingStatus = BirdFlyingStatus.none;
+        counter = 0;
+      }
+      
       this.ground.update(t);
     }
   }
