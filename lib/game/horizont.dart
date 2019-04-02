@@ -8,14 +8,13 @@ import 'package:flame/sprite.dart';
 import 'package:flutter_bird/game/config.dart';
 
 class Horizon extends PositionComponent with Resizable, ComposedComponent {
-  
   HorizonGround ground;
 
   Horizon(Image spriteImage, Size screenSize) {
     Sprite sprite = Sprite.fromImage(
       spriteImage,
-      width: Dimensions.horizontWidth,
-      height: Dimensions.horizontHeight,
+      width: SpriteDimensions.horizontWidth,
+      height: SpriteDimensions.horizontHeight,
       y: 0.0,
       x: 0.0,
     );

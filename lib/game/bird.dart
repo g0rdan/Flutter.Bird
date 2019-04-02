@@ -26,24 +26,24 @@ class Bird extends PositionComponent with ComposedComponent {
     List<Sprite> sprites = [
       Sprite.fromImage(
         spriteImage,
-        width: Dimensions.birdWidth,
-        height: Dimensions.birdHeight,
-        y: SpritesPostion.birdSprite1Y,
-        x: SpritesPostion.birdSprite1X,
+        width: SpriteDimensions.birdWidth,
+        height: SpriteDimensions.birdHeight,
+        y: SpritesPostions.birdSprite1Y,
+        x: SpritesPostions.birdSprite1X,
       ),
       Sprite.fromImage(
         spriteImage,
-        width: Dimensions.birdWidth,
-        height: Dimensions.birdHeight,
-        y: SpritesPostion.birdSprite2Y,
-        x: SpritesPostion.birdSprite2X,
+        width: SpriteDimensions.birdWidth,
+        height: SpriteDimensions.birdHeight,
+        y: SpritesPostions.birdSprite2Y,
+        x: SpritesPostions.birdSprite2X,
       ),
       Sprite.fromImage(
         spriteImage,
-        width: Dimensions.birdWidth,
-        height: Dimensions.birdHeight,
-        y: SpritesPostion.birdSprite3Y,
-        x: SpritesPostion.birdSprite3X,
+        width: SpriteDimensions.birdWidth,
+        height: SpriteDimensions.birdHeight,
+        y: SpritesPostions.birdSprite3Y,
+        x: SpritesPostions.birdSprite3X,
       )
     ];
 
