@@ -1,4 +1,3 @@
-import 'dart:ui' as ui;
 import 'package:flame/flame.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +6,9 @@ import 'package:flutter_bird/game/game.dart';
 
 void main() async {
   Flame.audio.disableLog();
-  List<ui.Image> image = await Flame.images.loadAll(["sprite.png"]);
-  FlutterBirdGame flutterBirdGame = FlutterBirdGame(spriteImage: image[0]);
+  var image = await Flame.images.loadAll(["sprite.png"]);
+  var screenSize = await Flame.util.initialDimensions();
+  var flutterBirdGame = FlutterBirdGame(spriteImage: image[0], screenSize: screenSize);
   runApp(MaterialApp(
     title: 'FlutterBirdGame',
     home: Scaffold(

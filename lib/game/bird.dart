@@ -95,6 +95,7 @@ class Bird extends PositionComponent with ComposedComponent {
     }
     status = BirdStatus.flying;
     counter = 0;
+    this.ground.angle = 0;
   }
 }
 

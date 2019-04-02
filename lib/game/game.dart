@@ -4,11 +4,12 @@ import 'package:flutter_bird/game/bird.dart';
 import 'package:flutter_bird/game/horizont.dart';
 
 class FlutterBirdGame extends BaseGame {
+  Size screenSize;
   Horizon horizon;
   Bird bird;
 
-  FlutterBirdGame({Image spriteImage}) {
-    horizon = Horizon(spriteImage);
+  FlutterBirdGame({Image spriteImage, Size screenSize}) {
+    horizon = Horizon(spriteImage, screenSize);
     bird = Bird(spriteImage);
     bird.setPosition(150, 350);
     this..add(horizon)..add(bird);
