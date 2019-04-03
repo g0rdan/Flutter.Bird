@@ -3,6 +3,7 @@ import 'package:flame/game.dart';
 import 'package:flutter_bird/game/bird.dart';
 import 'package:flutter_bird/game/bottom.dart';
 import 'package:flutter_bird/game/config.dart';
+import 'package:flutter_bird/game/gameover.dart';
 import 'package:flutter_bird/game/horizont.dart';
 
 enum GameStatus { playing, waiting, gameOver }
@@ -11,13 +12,15 @@ class FlutterBirdGame extends BaseGame {
   Size screenSize;
   Horizon horizon;
   Bird bird;
-  Bottom bottom; 
+  Bottom bottom;
+  GameOver gameOver;
   GameStatus status = GameStatus.waiting;
 
   FlutterBirdGame({Image spriteImage, Size screenSize}) {
     horizon = Horizon(spriteImage, screenSize);
     bird = Bird(spriteImage);
     bottom = Bottom(spriteImage, screenSize);
+    gameOver = GameOver(spriteImage, screenSize);
     bird.setPosition(ComponentPositions.birdX, ComponentPositions.birdY);
     bottom.setPosition(0, screenSize.height - ComponentDimensions.bottomHeight);
     this..add(horizon)..add(bird)..add(bottom);
@@ -31,6 +34,7 @@ class FlutterBirdGame extends BaseGame {
     }
     if (checkCollision(bird.ground.toRect(), bottom.rect)){
       status = GameStatus.gameOver;
+      this..add(gameOver);
     }      
   }
 
