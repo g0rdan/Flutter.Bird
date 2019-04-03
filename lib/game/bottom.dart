@@ -13,7 +13,12 @@ class Bottom extends PositionComponent with ComposedComponent {
   BottomGround secondGround;
   BottomStatus status = BottomStatus.waiting;
 
+  Size _screenSize;
+  Rect _rect;
+  Rect get rect => _rect;
+
   Bottom(Image spriteImage, Size screenSize) {
+    _screenSize = screenSize;
     Sprite sprite = Sprite.fromImage(
       spriteImage,
       width: SpriteDimensions.bottomWidth,
@@ -32,6 +37,7 @@ class Bottom extends PositionComponent with ComposedComponent {
     this.firstGround.y = y;
     this.secondGround.x = this.firstGround.width;
     this.secondGround.y = y;
+    _rect = Rect.fromLTWH(x, y, _screenSize.width, ComponentDimensions.bottomHeight);
   }
 
   void update(double t){

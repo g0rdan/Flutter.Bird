@@ -5,11 +5,14 @@ import 'package:flutter_bird/game/bottom.dart';
 import 'package:flutter_bird/game/config.dart';
 import 'package:flutter_bird/game/horizont.dart';
 
+enum GameStatus { playing, waiting, gameOver }
+
 class FlutterBirdGame extends BaseGame {
   Size screenSize;
   Horizon horizon;
   Bird bird;
   Bottom bottom; 
+  GameStatus status = GameStatus.waiting;
 
   FlutterBirdGame({Image spriteImage, Size screenSize}) {
     horizon = Horizon(spriteImage, screenSize);
@@ -22,12 +25,23 @@ class FlutterBirdGame extends BaseGame {
 
   @override
   void update(double t) {
-    bird.update(t);
-    bottom.update(t);
+    if (status == GameStatus.playing) {
+      bird.update(t);
+      bottom.update(t);
+    }
+    if (checkCollision(bird.ground.toRect(), bottom.rect)){
+      status = GameStatus.gameOver;
+    }      
   }
 
   void onTap() {
+    status = GameStatus.playing;
     bird.jump();
     bottom.move();
+  }
+
+  bool checkCollision(Rect item1, Rect item2){
+    var intersectedRect = item1.intersect(item2);
+    return intersectedRect.width > 0 && intersectedRect.height > 0;
   }
 }
