@@ -6,8 +6,12 @@ import 'package:flame/components/resizable.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter_bird/game/config.dart';
 
+enum BottomStatus { waiting, moving }
+
 class Bottom extends PositionComponent with ComposedComponent {
-  BottomGround ground;
+  BottomGround firstGround;
+  BottomGround secondGround;
+  BottomStatus status = BottomStatus.waiting;
 
   Bottom(Image spriteImage, Size screenSize) {
     Sprite sprite = Sprite.fromImage(
@@ -18,13 +22,35 @@ class Bottom extends PositionComponent with ComposedComponent {
       x: SpritesPostions.bottomX,
     );
 
-    this.ground = BottomGround(sprite, screenSize);
-    this..add(ground);
+    this.firstGround = BottomGround(sprite, screenSize);
+    this.secondGround = BottomGround(sprite, screenSize);
+    this..add(firstGround)..add(secondGround);
   }
 
   void setPosition(double x, double y) {
-    this.ground.x = x;
-    this.ground.y = y;
+    this.firstGround.x = x;
+    this.firstGround.y = y;
+    this.secondGround.x = this.firstGround.width;
+    this.secondGround.y = y;
+  }
+
+  void update(double t){
+    if (status == BottomStatus.moving) {
+      this.firstGround.x -= 2;
+      this.secondGround.x -= 2;
+
+      if (this.firstGround.x + this.firstGround.width <= 0) {
+        this.firstGround.x = this.secondGround.x + this.secondGround.width;
+      }
+
+      if (this.secondGround.x + this.secondGround.width <= 0) {
+        this.secondGround.x = this.firstGround.x + this.firstGround.width;
+      }
+    }
+  }
+
+  void move() {
+    status = BottomStatus.moving;
   }
 }
 

@@ -23,9 +23,11 @@ class FlutterBirdGame extends BaseGame {
   @override
   void update(double t) {
     bird.update(t);
+    bottom.update(t);
   }
 
   void onTap() {
     bird.jump();
+    bottom.move();
   }
 }
