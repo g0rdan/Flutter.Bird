@@ -35,10 +35,15 @@ class Tube extends PositionComponent with Resizable, ComposedComponent {
   }
 
   void setPosition(double x, double y) {
-    this._ground.x = x;
-    this._ground.y = _type == TubeType.top ? 
-      y + ComponentDimensions.tubeHeight 
-      : y;
+    switch (_type) {
+      case TubeType.top:
+        this._ground.x = x + ComponentDimensions.tubeWidth;
+        this._ground.y = y + ComponentDimensions.tubeHeight;
+        break;
+      default:
+        this._ground.x = x;
+        this._ground.y = y;
+    }
   }
 }
 

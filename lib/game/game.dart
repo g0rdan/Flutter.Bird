@@ -30,9 +30,9 @@ class FlutterBirdGame extends BaseGame {
     bottom.setPosition(0, screenSize.height - ComponentDimensions.bottomHeight);
     this..add(horizon)..add(bird)..add(bottom);
 
-    // topTube.setPosition(100, 100);
-    // bottomTube.setPosition(150, 100);
-    // this..add(topTube)..add(bottomTube);
+    topTube.setPosition(100, 100);
+    bottomTube.setPosition(178, 100);
+    this..add(topTube)..add(bottomTube);
   }
 
   @override
