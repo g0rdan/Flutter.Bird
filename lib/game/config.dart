@@ -7,6 +7,8 @@ class SpriteDimensions {
   static double bottomHeight = 56.0;
   static double gameOverWidth = 96.0;
   static double gameOverHeight = 21.0;
+  static double tubeWidth = 26.0;
+  static double tubeHeight = 160.0;
 }
 
 class SpritesPostions {
@@ -20,12 +22,16 @@ class SpritesPostions {
   static double bottomY = 0.0;
   static double gameOverX = 395.0;
   static double gameOverY = 59.0;
+  static double tubeX = 84.0;
+  static double tubeY = 323.0;
 }
 
 class ComponentDimensions {
   static double bottomHeight = 200;
   static double gameOverWidth = 200;
   static double gameOverHeight = 43.75;
+  static double tubeWidth = 78;
+  static double tubeHeight = 480;
 }
 
 class ComponentPositions {

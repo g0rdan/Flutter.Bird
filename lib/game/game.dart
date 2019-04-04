@@ -5,6 +5,7 @@ import 'package:flutter_bird/game/bottom.dart';
 import 'package:flutter_bird/game/config.dart';
 import 'package:flutter_bird/game/gameover.dart';
 import 'package:flutter_bird/game/horizont.dart';
+import 'package:flutter_bird/game/tube.dart';
 
 enum GameStatus { playing, waiting, gameOver }
 
@@ -14,6 +15,8 @@ class FlutterBirdGame extends BaseGame {
   Bird bird;
   Bottom bottom;
   GameOver gameOver;
+  Tube topTube;
+  Tube bottomTube;
   GameStatus status = GameStatus.waiting;
 
   FlutterBirdGame({Image spriteImage, Size screenSize}) {
@@ -21,9 +24,15 @@ class FlutterBirdGame extends BaseGame {
     bird = Bird(spriteImage);
     bottom = Bottom(spriteImage, screenSize);
     gameOver = GameOver(spriteImage, screenSize);
+    topTube = Tube(TubeType.top, spriteImage);
+    bottomTube = Tube(TubeType.bottom, spriteImage);
     bird.setPosition(ComponentPositions.birdX, ComponentPositions.birdY);
     bottom.setPosition(0, screenSize.height - ComponentDimensions.bottomHeight);
     this..add(horizon)..add(bird)..add(bottom);
+
+    // topTube.setPosition(100, 100);
+    // bottomTube.setPosition(150, 100);
+    // this..add(topTube)..add(bottomTube);
   }
 
   @override
