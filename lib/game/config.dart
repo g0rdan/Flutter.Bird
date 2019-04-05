@@ -27,7 +27,7 @@ class SpritesPostions {
 }
 
 class ComponentDimensions {
-  static double bottomHeight = 200;
+  static double bottomHeight = 130;
   static double gameOverWidth = 200;
   static double gameOverHeight = 43.75;
   static double tubeWidth = 78;
@@ -35,6 +35,6 @@ class ComponentDimensions {
 }
 
 class ComponentPositions {
-  static double birdX = 150;
-  static double birdY = 350;
+  static double birdX = 80;
+  static double birdY = 250;
 }

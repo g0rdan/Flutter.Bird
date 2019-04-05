@@ -42,8 +42,8 @@ class Bottom extends PositionComponent with ComposedComponent {
 
   void update(double t){
     if (status == BottomStatus.moving) {
-      this.firstGround.x -= 2;
-      this.secondGround.x -= 2;
+      this.firstGround.x -= t * 120;
+      this.secondGround.x -= t * 120;
 
       if (this.firstGround.x + this.firstGround.width <= 0) {
         this.firstGround.x = this.secondGround.x + this.secondGround.width;

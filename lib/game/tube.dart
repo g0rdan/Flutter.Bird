@@ -9,7 +9,7 @@ import 'package:flutter_bird/game/config.dart';
 enum TubeType { top, bottom }
 
 class Tube extends PositionComponent with Resizable, ComposedComponent {
-  TubeGround _ground;
+  TubeGround ground;
   TubeType _type;
 
   Tube(TubeType type, Image spriteImage) {
@@ -22,28 +22,32 @@ class Tube extends PositionComponent with Resizable, ComposedComponent {
       x: SpritesPostions.tubeX,
     );
 
-    this._ground = TubeGround(sprite);
+    this.ground = TubeGround(sprite);
 
     switch (_type) {
       case TubeType.top:
-        this._ground.angle = 3.14159; // radians
+        this.ground.angle = 3.14159; // radians
         break;
       default:
     }
 
-    this..add(_ground);
+    this..add(ground);
   }
 
   void setPosition(double x, double y) {
     switch (_type) {
       case TubeType.top:
-        this._ground.x = x + ComponentDimensions.tubeWidth;
-        this._ground.y = y + ComponentDimensions.tubeHeight;
+        this.ground.x = x + ComponentDimensions.tubeWidth;
+        this.ground.y = y + ComponentDimensions.tubeHeight;
         break;
       default:
-        this._ground.x = x;
-        this._ground.y = y;
+        this.ground.x = x;
+        this.ground.y = y;
     }
+  }
+
+  void update(double t){
+      this.ground.x -= t * 120;
   }
 }
 

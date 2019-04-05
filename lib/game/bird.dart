@@ -16,7 +16,7 @@ class Bird extends PositionComponent with ComposedComponent {
   BirdStatus status = BirdStatus.waiting;
   BirdFlyingStatus flyingStatus = BirdFlyingStatus.none;
   int counter = 0;
-  int tickStep = 50;
+  int tickStep = 25;
   Size screenSize;
   double heightDiff = 0.0;
   double stepDiff = 0.0;
@@ -61,16 +61,30 @@ class Bird extends PositionComponent with ComposedComponent {
     birdMovingProcess(t);
   }
 
+  double getSpeedRatio(BirdFlyingStatus flyingStatus, int counter){
+    if (flyingStatus == BirdFlyingStatus.up) {
+      var backwardCounter = tickStep - counter;
+      return backwardCounter / 10.0;
+    }
+    if (flyingStatus == BirdFlyingStatus.down) {
+      var diffCounter = counter - tickStep;
+      return diffCounter / 10.0;
+    }
+    return 0.0;
+  }
+
   void birdMovingProcess(double t){
     if (status == BirdStatus.flying) {
+      counter++;
       if (counter <= tickStep) {
-        counter++;
         flyingStatus = BirdFlyingStatus.up;
+        this.ground.showAnimation = true;
         this.ground.angle -= 0.01;
-        this.ground.y -= 3;
+        this.ground.y -= t * 100 * getSpeedRatio(flyingStatus, counter);
       }
       else {
         flyingStatus = BirdFlyingStatus.down;
+        this.ground.showAnimation = false;
 
         if (heightDiff == 0)
           heightDiff = (screenSize.height - this.ground.y);
@@ -78,13 +92,9 @@ class Bird extends PositionComponent with ComposedComponent {
           stepDiff = this.ground.angle.abs() / (heightDiff / 10);
           
         this.ground.angle += stepDiff;
-        this.ground.y += 3;
+        this.ground.y += t * 100 * getSpeedRatio(flyingStatus, counter);
       }
-      // else{
-      //   flyingStatus = BirdFlyingStatus.none;
-      //   status = BirdStatus.waiting;
-      //   counter = 0;
-      // }
+      
       this.ground.update(t);
     }
   }
@@ -100,5 +110,17 @@ class Bird extends PositionComponent with ComposedComponent {
 }
 
 class BirdGround extends AnimationComponent {
+
+  bool _showAnimation = true;
+  bool get showAnimation => _showAnimation;
+  set showAnimation(bool value) => _showAnimation = value;
+
   BirdGround(Animation animation) : super(51, 36, animation);
+
+  @override
+  void update(double t){
+    if (_showAnimation) {
+      super.update(t);
+    }
+  }
 }
