@@ -29,8 +29,9 @@ class FlutterBirdGame extends BaseGame {
     bottomTube = Tube(TubeType.bottom, spriteImage);
     bird.setPosition(ComponentPositions.birdX, ComponentPositions.birdY);
     bottom.setPosition(0, screenSize.height - ComponentDimensions.bottomHeight);
-    bottomTube.setPosition(480, 150);
-    this..add(horizon)..add(bird)..add(bottomTube)..add(bottom);
+    bottomTube.setPosition(480, 400);
+    topTube.setPosition(480, -250);
+    this..add(horizon)..add(bird)..add(topTube)..add(bottomTube)..add(bottom);
   }
 
   @override
@@ -39,6 +40,7 @@ class FlutterBirdGame extends BaseGame {
       bird.update(t * speed);
       bottom.update(t * speed);
       bottomTube.update(t * speed);
+      topTube.update(t * speed);
     }
 
     var birdRect = bird.ground.toRect();
@@ -49,6 +51,11 @@ class FlutterBirdGame extends BaseGame {
     }
 
     if (checkCollision(birdRect, bottomTube.ground.toRect())){
+      status = GameStatus.gameOver;
+      this..add(gameOver);
+    }
+
+    if (checkCollision(birdRect, topTube.ground.toRect())){
       status = GameStatus.gameOver;
       this..add(gameOver);
     }

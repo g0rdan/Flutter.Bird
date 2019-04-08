@@ -22,7 +22,7 @@ class Tube extends PositionComponent with Resizable, ComposedComponent {
       x: SpritesPostions.tubeX,
     );
 
-    this.ground = TubeGround(sprite);
+    this.ground = TubeGround(sprite, _type);
 
     switch (_type) {
       case TubeType.top:
@@ -32,6 +32,22 @@ class Tube extends PositionComponent with Resizable, ComposedComponent {
     }
 
     this..add(ground);
+  }
+
+  @override
+  Rect toRect() {
+    var baseRect = super.toRect();
+    if (_type == TubeType.bottom) {
+      return baseRect;
+    }
+    else {
+      return Rect.fromLTWH(
+        baseRect.left - ComponentDimensions.tubeWidth, 
+        baseRect.top - ComponentDimensions.tubeHeight, 
+        baseRect.width, 
+        baseRect.height
+      );
+    }
   }
 
   void setPosition(double x, double y) {
@@ -52,7 +68,28 @@ class Tube extends PositionComponent with Resizable, ComposedComponent {
 }
 
 class TubeGround extends SpriteComponent with Resizable {
-  TubeGround(Sprite sprite)
+  TubeType _type;
+
+  TubeGround(Sprite sprite, TubeType type)
       : super.fromSprite(
-            ComponentDimensions.tubeWidth, ComponentDimensions.tubeHeight, sprite);
+            ComponentDimensions.tubeWidth, ComponentDimensions.tubeHeight, sprite)
+  {
+    _type = type;
+  }
+  
+  @override
+  Rect toRect() {
+    var baseRect = super.toRect();
+    if (_type == TubeType.bottom) {
+      return baseRect;
+    }
+    else {
+      return Rect.fromLTWH(
+        baseRect.left - ComponentDimensions.tubeWidth, 
+        baseRect.top - ComponentDimensions.tubeHeight, 
+        baseRect.width, 
+        baseRect.height
+      );
+    }
+  }
 }
