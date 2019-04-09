@@ -17,12 +17,13 @@ class Bird extends PositionComponent with ComposedComponent {
   BirdFlyingStatus flyingStatus = BirdFlyingStatus.none;
   int counter = 0;
   int tickStep = 25;
-  Size screenSize;
+  Size _screenSize;
   double heightDiff = 0.0;
   double stepDiff = 0.0;
 
-  Bird(Image spriteImage)
+  Bird(Image spriteImage, Size screenSize)
   {
+    _screenSize = screenSize;
     List<Sprite> sprites = [
       Sprite.fromImage(
         spriteImage,
@@ -87,7 +88,7 @@ class Bird extends PositionComponent with ComposedComponent {
         this.ground.showAnimation = false;
 
         if (heightDiff == 0)
-          heightDiff = (screenSize.height - this.ground.y);
+          heightDiff = (_screenSize.height - this.ground.y);
         if (stepDiff == 0)
           stepDiff = this.ground.angle.abs() / (heightDiff / 10);
           
@@ -99,10 +100,7 @@ class Bird extends PositionComponent with ComposedComponent {
     }
   }
 
-  Future<void> jump() async {
-    if (screenSize == null) {
-      screenSize = await Flame.util.initialDimensions();
-    }
+  void jump() {
     status = BirdStatus.flying;
     counter = 0;
     this.ground.angle = 0;

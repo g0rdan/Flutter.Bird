@@ -22,7 +22,7 @@ class FlutterBirdGame extends BaseGame {
 
   FlutterBirdGame({Image spriteImage, Size screenSize}) {
     horizon = Horizon(spriteImage, screenSize);
-    bird = Bird(spriteImage);
+    bird = Bird(spriteImage, screenSize);
     bottom = Bottom(spriteImage, screenSize);
     gameOver = GameOver(spriteImage, screenSize);
     topTube = Tube(TubeType.top, spriteImage);
