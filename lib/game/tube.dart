@@ -11,6 +11,11 @@ enum TubeType { top, bottom }
 class Tube extends PositionComponent with Resizable, ComposedComponent {
   TubeGround ground;
   TubeType _type;
+  bool _hasBeenOnScreen = false;
+
+  bool get isOnScreen => 
+    this.ground.x + ComponentDimensions.tubeWidth > 0 && 
+    this.ground.x < 414;
 
   Tube(TubeType type, Image spriteImage) {
     _type = type;
@@ -63,6 +68,16 @@ class Tube extends PositionComponent with Resizable, ComposedComponent {
   }
 
   void update(double t){
+      
+      if (!_hasBeenOnScreen && isOnScreen)
+        _hasBeenOnScreen = true;
+      if (_hasBeenOnScreen && !isOnScreen)
+      {
+        print("Moved");
+        this.ground.x = 480;
+        _hasBeenOnScreen = false;
+      }
+
       this.ground.x -= t * 120;
   }
 }

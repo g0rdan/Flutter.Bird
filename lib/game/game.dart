@@ -15,23 +15,50 @@ class FlutterBirdGame extends BaseGame {
   Bird bird;
   Bottom bottom;
   GameOver gameOver;
-  Tube topTube;
-  Tube bottomTube;
+  Tube firstTopTube;
+  Tube firstBottomTube;
+  Tube secondTopTube;
+  Tube secondBottomTube;
+  Tube thirdTopTube;
+  Tube thirdBottomTube;
   GameStatus status = GameStatus.waiting;
   double speed = 1.0;
+  double xTubeOffset = 210;
+  double xTubeStart = 480;
 
   FlutterBirdGame({Image spriteImage, Size screenSize}) {
     horizon = Horizon(spriteImage, screenSize);
     bird = Bird(spriteImage, screenSize);
     bottom = Bottom(spriteImage, screenSize);
     gameOver = GameOver(spriteImage, screenSize);
-    topTube = Tube(TubeType.top, spriteImage);
-    bottomTube = Tube(TubeType.bottom, spriteImage);
+
+    firstTopTube = Tube(TubeType.top, spriteImage);
+    firstBottomTube = Tube(TubeType.bottom, spriteImage);
+    secondTopTube = Tube(TubeType.top, spriteImage);
+    secondBottomTube = Tube(TubeType.bottom, spriteImage);
+    thirdTopTube = Tube(TubeType.top, spriteImage);
+    thirdBottomTube = Tube(TubeType.bottom, spriteImage);
+
     bird.setPosition(ComponentPositions.birdX, ComponentPositions.birdY);
     bottom.setPosition(0, screenSize.height - ComponentDimensions.bottomHeight);
-    bottomTube.setPosition(480, 400);
-    topTube.setPosition(480, -250);
-    this..add(horizon)..add(bird)..add(topTube)..add(bottomTube)..add(bottom);
+
+    firstBottomTube.setPosition(xTubeStart, 400);
+    firstTopTube.setPosition(xTubeStart, -250);
+    secondBottomTube.setPosition(xTubeStart + xTubeOffset, 400);
+    secondTopTube.setPosition(xTubeStart + xTubeOffset, -250);
+    thirdBottomTube.setPosition(xTubeStart + xTubeOffset * 2, 400);
+    thirdTopTube.setPosition(xTubeStart + xTubeOffset * 2, -250);
+
+    this
+      ..add(horizon)
+      ..add(bird)
+      ..add(firstTopTube)
+      ..add(firstBottomTube)
+      ..add(secondTopTube)
+      ..add(secondBottomTube)
+      ..add(thirdTopTube)
+      ..add(thirdBottomTube)
+      ..add(bottom);
   }
 
   @override
@@ -39,8 +66,14 @@ class FlutterBirdGame extends BaseGame {
     if (status == GameStatus.playing) {
       bird.update(t * speed);
       bottom.update(t * speed);
-      bottomTube.update(t * speed);
-      topTube.update(t * speed);
+      firstBottomTube.update(t * speed);
+      firstTopTube.update(t * speed);
+      secondBottomTube.update(t * speed);
+      secondTopTube.update(t * speed);
+      thirdBottomTube.update(t * speed);
+      thirdTopTube.update(t * speed);
+
+      // print(firstBottomTube.isOnScreen.toString());
     }
 
     var birdRect = bird.ground.toRect();
@@ -50,15 +83,15 @@ class FlutterBirdGame extends BaseGame {
       this..add(gameOver);
     }
 
-    if (checkCollision(birdRect, bottomTube.ground.toRect())){
-      status = GameStatus.gameOver;
-      this..add(gameOver);
-    }
+    // if (checkCollision(birdRect, firstBottomTube.ground.toRect())){
+    //   status = GameStatus.gameOver;
+    //   this..add(gameOver);
+    // }
 
-    if (checkCollision(birdRect, topTube.ground.toRect())){
-      status = GameStatus.gameOver;
-      this..add(gameOver);
-    }
+    // if (checkCollision(birdRect, firstTopTube.ground.toRect())){
+    //   status = GameStatus.gameOver;
+    //   this..add(gameOver);
+    // }
   }
 
   void onTap() {

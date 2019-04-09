@@ -4,7 +4,6 @@ import 'package:flame/animation.dart';
 import 'package:flame/components/animation_component.dart';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/composed_component.dart';
-import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter_bird/game/config.dart';
 
