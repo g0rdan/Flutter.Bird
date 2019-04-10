@@ -8,7 +8,8 @@ void main() async {
   Flame.audio.disableLog();
   var image = await Flame.images.loadAll(["sprite.png"]);
   var screenSize = await Flame.util.initialDimensions();
-  var flutterBirdGame = FlutterBirdGame(spriteImage: image[0], screenSize: screenSize);
+  Singleton.instance.screenSize = screenSize;
+  var flutterBirdGame = FlutterBirdGame(image[0], screenSize);
   runApp(MaterialApp(
     title: 'FlutterBirdGame',
     home: Scaffold(
@@ -30,4 +31,10 @@ class GameWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return tRexGame.widget;
   }
+}
+
+class Singleton {
+  Size screenSize;
+  Singleton._privateConstructor();
+  static final Singleton instance = Singleton._privateConstructor();
 }

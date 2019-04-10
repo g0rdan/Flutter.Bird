@@ -5,6 +5,7 @@ import 'package:flame/components/composed_component.dart';
 import 'package:flame/components/resizable.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter_bird/game/config.dart';
+import 'package:flutter_bird/main.dart';
 
 enum TubeType { top, bottom }
 
@@ -15,7 +16,7 @@ class Tube extends PositionComponent with Resizable, ComposedComponent {
 
   bool get isOnScreen => 
     this.ground.x + ComponentDimensions.tubeWidth > 0 && 
-    this.ground.x < 414;
+    this.ground.x < Singleton.instance.screenSize.width;
 
   Tube(TubeType type, Image spriteImage) {
     _type = type;
@@ -74,7 +75,7 @@ class Tube extends PositionComponent with Resizable, ComposedComponent {
       if (_hasBeenOnScreen && !isOnScreen)
       {
         print("Moved");
-        this.ground.x = 480;
+        this.ground.x = Singleton.instance.screenSize.width * 1.5;
         _hasBeenOnScreen = false;
       }
 
