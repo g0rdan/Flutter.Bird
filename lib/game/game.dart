@@ -22,21 +22,27 @@ class FlutterBirdGame extends BaseGame {
   Tube secondBottomTube;
   Tube thirdTopTube;
   Tube thirdBottomTube;
+  Image _spriteImage;
   GameStatus status = GameStatus.waiting;
   double speed = 1.0;
   double xTubeOffset = 210;
   double xTubeStart = Singleton.instance.screenSize.width * 1.5;
 
   FlutterBirdGame(Image spriteImage, Size screenSize) {
+    _spriteImage = spriteImage;
     horizon = Horizon(spriteImage, screenSize);
     bird = Bird(spriteImage, screenSize);
     bottom = Bottom(spriteImage, screenSize);
     gameOver = GameOver(spriteImage, screenSize);
 
-    bird.setPosition(ComponentPositions.birdX, ComponentPositions.birdY);
-    bottom.setPosition(0, screenSize.height - ComponentDimensions.bottomHeight);
+    firstBottomTube = Tube(TubeType.bottom, spriteImage);
+    firstTopTube = Tube(TubeType.top, spriteImage, firstBottomTube);
+    secondBottomTube = Tube(TubeType.bottom, spriteImage);
+    secondTopTube = Tube(TubeType.top, spriteImage, secondBottomTube);
+    thirdBottomTube = Tube(TubeType.bottom, spriteImage);
+    thirdTopTube = Tube(TubeType.top, spriteImage, thirdBottomTube);
 
-    initTubes(spriteImage);
+    initPositions(spriteImage);
 
     this
       ..add(horizon)
@@ -50,13 +56,9 @@ class FlutterBirdGame extends BaseGame {
       ..add(bottom);
   }
 
-  void initTubes(Image spriteImage) {
-    firstTopTube = Tube(TubeType.top, spriteImage);
-    firstBottomTube = Tube(TubeType.bottom, spriteImage);
-    secondTopTube = Tube(TubeType.top, spriteImage);
-    secondBottomTube = Tube(TubeType.bottom, spriteImage);
-    thirdTopTube = Tube(TubeType.top, spriteImage);
-    thirdBottomTube = Tube(TubeType.bottom, spriteImage);
+  void initPositions(Image spriteImage) {
+    bird.setPosition(ComponentPositions.birdX, ComponentPositions.birdY);
+    bottom.setPosition(0, Singleton.instance.screenSize.height - ComponentDimensions.bottomHeight);
     firstBottomTube.setPosition(xTubeStart, 400);
     firstTopTube.setPosition(xTubeStart, -250);
     secondBottomTube.setPosition(xTubeStart + xTubeOffset, 400);
@@ -85,41 +87,54 @@ class FlutterBirdGame extends BaseGame {
       this..add(gameOver);
     }
 
-    if (checkCollision(birdRect, firstBottomTube.ground.toRect())){
-      status = GameStatus.gameOver;
-      this..add(gameOver);
-    }
+    // if (checkCollision(birdRect, firstBottomTube.ground.toRect())){
+    //   status = GameStatus.gameOver;
+    //   this..add(gameOver);
+    // }
 
-    if (checkCollision(birdRect, firstTopTube.ground.toRect())){
-      status = GameStatus.gameOver;
-      this..add(gameOver);
-    }
+    // if (checkCollision(birdRect, firstTopTube.ground.toRect())){
+    //   status = GameStatus.gameOver;
+    //   this..add(gameOver);
+    // }
 
-    if (checkCollision(birdRect, secondBottomTube.ground.toRect())){
-      status = GameStatus.gameOver;
-      this..add(gameOver);
-    }
+    // if (checkCollision(birdRect, secondBottomTube.ground.toRect())){
+    //   status = GameStatus.gameOver;
+    //   this..add(gameOver);
+    // }
 
-    if (checkCollision(birdRect, secondTopTube.ground.toRect())){
-      status = GameStatus.gameOver;
-      this..add(gameOver);
-    }
+    // if (checkCollision(birdRect, secondTopTube.ground.toRect())){
+    //   status = GameStatus.gameOver;
+    //   this..add(gameOver);
+    // }
 
-    if (checkCollision(birdRect, thirdBottomTube.ground.toRect())){
-      status = GameStatus.gameOver;
-      this..add(gameOver);
-    }
+    // if (checkCollision(birdRect, thirdBottomTube.ground.toRect())){
+    //   status = GameStatus.gameOver;
+    //   this..add(gameOver);
+    // }
 
-    if (checkCollision(birdRect, thirdTopTube.ground.toRect())){
-      status = GameStatus.gameOver;
-      this..add(gameOver);
-    }
+    // if (checkCollision(birdRect, thirdTopTube.ground.toRect())){
+    //   status = GameStatus.gameOver;
+    //   this..add(gameOver);
+    // }
   }
 
   void onTap() {
-    status = GameStatus.playing;
-    bird.jump();
-    bottom.move();
+    switch (status) {
+      case GameStatus.waiting:
+        status = GameStatus.playing;
+        bird.jump();
+        bottom.move();
+        break;
+      case GameStatus.gameOver:
+        status = GameStatus.waiting;
+        initPositions(_spriteImage);
+        break;
+      case GameStatus.playing:
+        bird.jump();
+        break;
+      default:
+    }
+    
   }
 
   bool checkCollision(Rect item1, Rect item2){
