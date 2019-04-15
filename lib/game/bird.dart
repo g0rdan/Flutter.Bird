@@ -4,6 +4,7 @@ import 'package:flame/animation.dart';
 import 'package:flame/components/animation_component.dart';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/composed_component.dart';
+import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter_bird/game/config.dart';
 
@@ -15,7 +16,7 @@ class Bird extends PositionComponent with ComposedComponent {
   BirdStatus status = BirdStatus.waiting;
   BirdFlyingStatus flyingStatus = BirdFlyingStatus.none;
   int counter = 0;
-  int tickStep = 25;
+  int tickStep = 15;
   Size _screenSize;
   double heightDiff = 0.0;
   double stepDiff = 0.0;
@@ -100,6 +101,7 @@ class Bird extends PositionComponent with ComposedComponent {
   }
 
   void jump() {
+    Flame.audio.play('wing.wav');
     status = BirdStatus.flying;
     counter = 0;
     this.ground.angle = 0;

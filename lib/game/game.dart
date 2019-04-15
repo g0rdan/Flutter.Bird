@@ -26,7 +26,7 @@ class FlutterBirdGame extends BaseGame {
   Image _spriteImage;
   GameStatus status = GameStatus.waiting;
   double speed = 1.0;
-  double xTubeOffset = 210;
+  double xTubeOffset = 220;
   double xTubeStart = Singleton.instance.screenSize.width * 1.5;
 
   FlutterBirdGame(Image spriteImage, Size screenSize) {
@@ -54,7 +54,8 @@ class FlutterBirdGame extends BaseGame {
       ..add(secondBottomTube)
       ..add(thirdTopTube)
       ..add(thirdBottomTube)
-      ..add(bottom);
+      ..add(bottom)
+      ..add(gameOver);
   }
 
   void initPositions(Image spriteImage) {
@@ -66,6 +67,7 @@ class FlutterBirdGame extends BaseGame {
     secondTopTube.setPosition(xTubeStart + xTubeOffset, -250);
     thirdBottomTube.setPosition(xTubeStart + xTubeOffset * 2, 400);
     thirdTopTube.setPosition(xTubeStart + xTubeOffset * 2, -250);
+    gameOver.ground.y = Singleton.instance.screenSize.height;
   }
 
   @override
@@ -83,40 +85,42 @@ class FlutterBirdGame extends BaseGame {
 
     var birdRect = bird.ground.toRect();
 
-    if (checkCollision(birdRect, bottom.rect)){
-      status = GameStatus.gameOver;
-      this..add(gameOver);
+    if (check2ItemsCollision(birdRect, bottom.rect)){
+      gameOverAction();
     }
 
-    // if (checkCollision(birdRect, firstBottomTube.ground.toRect())){
-    //   status = GameStatus.gameOver;
-    //   this..add(gameOver);
-    // }
+    if (check2ItemsCollision(birdRect, firstBottomTube.ground.toRect())){
+      gameOverAction();
+    }
 
-    // if (checkCollision(birdRect, firstTopTube.ground.toRect())){
-    //   status = GameStatus.gameOver;
-    //   this..add(gameOver);
-    // }
+    if (check2ItemsCollision(birdRect, firstTopTube.ground.toRect())){
+      gameOverAction();
+    }
 
-    // if (checkCollision(birdRect, secondBottomTube.ground.toRect())){
-    //   status = GameStatus.gameOver;
-    //   this..add(gameOver);
-    // }
+    if (check2ItemsCollision(birdRect, secondBottomTube.ground.toRect())){
+      gameOverAction();
+    }
 
-    // if (checkCollision(birdRect, secondTopTube.ground.toRect())){
-    //   status = GameStatus.gameOver;
-    //   this..add(gameOver);
-    // }
+    if (check2ItemsCollision(birdRect, secondTopTube.ground.toRect())){
+      gameOverAction();
+    }
 
-    // if (checkCollision(birdRect, thirdBottomTube.ground.toRect())){
-    //   status = GameStatus.gameOver;
-    //   this..add(gameOver);
-    // }
+    if (check2ItemsCollision(birdRect, thirdBottomTube.ground.toRect())){
+      gameOverAction();
+    }
 
-    // if (checkCollision(birdRect, thirdTopTube.ground.toRect())){
-    //   status = GameStatus.gameOver;
-    //   this..add(gameOver);
-    // }
+    if (check2ItemsCollision(birdRect, thirdTopTube.ground.toRect())){
+      gameOverAction();
+    }
+  }
+
+  void gameOverAction(){
+    if (status != GameStatus.gameOver) {
+      Flame.audio.play('hit.wav');
+      Flame.audio.play('die.wav');
+      status = GameStatus.gameOver;
+      gameOver.ground.y = (Singleton.instance.screenSize.height - gameOver.ground.height) / 2;
+    }
   }
 
   void onTap() {
@@ -127,12 +131,10 @@ class FlutterBirdGame extends BaseGame {
         bottom.move();
         break;
       case GameStatus.gameOver:
-        Flame.audio.play("die.wav");
         status = GameStatus.waiting;
         initPositions(_spriteImage);
         break;
       case GameStatus.playing:
-        Flame.audio.play('wing.wav');
         bird.jump();
         break;
       default:
@@ -140,7 +142,7 @@ class FlutterBirdGame extends BaseGame {
     
   }
 
-  bool checkCollision(Rect item1, Rect item2){
+  bool check2ItemsCollision(Rect item1, Rect item2){
     var intersectedRect = item1.intersect(item2);
     return intersectedRect.width > 0 && intersectedRect.height > 0;
   }
