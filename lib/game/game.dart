@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter_bird/game/bird.dart';
 import 'package:flutter_bird/game/bottom.dart';
@@ -126,10 +127,12 @@ class FlutterBirdGame extends BaseGame {
         bottom.move();
         break;
       case GameStatus.gameOver:
+        Flame.audio.play("die.wav");
         status = GameStatus.waiting;
         initPositions(_spriteImage);
         break;
       case GameStatus.playing:
+        Flame.audio.play('wing.wav');
         bird.jump();
         break;
       default:
