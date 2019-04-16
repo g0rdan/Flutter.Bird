@@ -29,6 +29,13 @@ class FlutterBirdGame extends BaseGame {
   double xTubeOffset = 220;
   double xTubeStart = Singleton.instance.screenSize.width * 1.5;
 
+  int _achiveCounter = 0;
+  int get achiveCounter => _achiveCounter;
+  set achiveCounter(int number) {
+    Flame.audio.play('point.wav');
+    _achiveCounter = number;
+  }
+
   FlutterBirdGame(Image spriteImage, Size screenSize) {
     _spriteImage = spriteImage;
     horizon = Horizon(spriteImage, screenSize);
@@ -112,6 +119,12 @@ class FlutterBirdGame extends BaseGame {
     if (check2ItemsCollision(birdRect, thirdTopTube.ground.toRect())){
       gameOverAction();
     }
+
+    if (checkIfBirdCrossedTube(firstTopTube) || 
+        checkIfBirdCrossedTube(secondTopTube) || 
+        checkIfBirdCrossedTube(thirdTopTube)) {
+      achiveCounter++;
+    }
   }
 
   void gameOverAction(){
@@ -121,6 +134,19 @@ class FlutterBirdGame extends BaseGame {
       status = GameStatus.gameOver;
       gameOver.ground.y = (Singleton.instance.screenSize.height - gameOver.ground.height) / 2;
     }
+  }
+
+  bool checkIfBirdCrossedTube(Tube tube) {
+    if (!tube.crossedBird) {
+      var tubeRect = tube.ground.toRect();
+      var xCenterOfTube = tubeRect.left + tubeRect.width / 2;
+      var xCenterOfBird = ComponentPositions.birdX + ComponentDimensions.birdWidth / 2;
+      if (xCenterOfTube < xCenterOfBird && status == GameStatus.playing) {
+        tube.crossedBird = true;
+        return true;
+      }
+    }
+    return false;
   }
 
   void onTap() {

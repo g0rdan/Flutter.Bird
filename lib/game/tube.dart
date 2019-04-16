@@ -15,7 +15,6 @@ class Tube extends PositionComponent with Resizable, ComposedComponent {
   TubeGround ground;
   TubeType _type;
   bool _hasBeenOnScreen = false;
-
   double _holeRange = 150;
   double get _topTubeOffset => Singleton.instance.screenSize.height * 0.15;
   double get _bottomTubeOffset => Singleton.instance.screenSize.height * 0.5;
@@ -23,6 +22,8 @@ class Tube extends PositionComponent with Resizable, ComposedComponent {
   bool get isOnScreen => 
     this.ground.x + ComponentDimensions.tubeWidth > 0 && 
     this.ground.x < Singleton.instance.screenSize.width;
+  
+  bool crossedBird = false;
 
   Tube(TubeType type, Image spriteImage, [Tube bottomTube]) {
     _type = type;
@@ -76,6 +77,7 @@ class Tube extends PositionComponent with Resizable, ComposedComponent {
         print("Moved");
         this.ground.x = Singleton.instance.screenSize.width * 1.5;
         setY();
+        crossedBird = false;
         _hasBeenOnScreen = false;
       }
       this.ground.x -= t * 110;

@@ -21,7 +21,6 @@ class Bird extends PositionComponent with ComposedComponent {
   BirdGround ground;
   BirdStatus status = BirdStatus.waiting;
   BirdFlyingStatus flyingStatus = BirdFlyingStatus.none;
-  int achiveCounter;
 
   Bird(Image spriteImage, Size screenSize)
   {

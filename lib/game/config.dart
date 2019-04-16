@@ -32,6 +32,8 @@ class ComponentDimensions {
   static double gameOverHeight = 43.75;
   static double tubeWidth = 78;
   static double tubeHeight = 480;
+  static double birdWidth = 51;
+  static double birdHeight = 36;
 }
 
 class ComponentPositions {
