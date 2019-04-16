@@ -24,9 +24,9 @@ class Tube extends PositionComponent with Resizable, ComposedComponent {
     this.ground.x + ComponentDimensions.tubeWidth > 0 && 
     this.ground.x < Singleton.instance.screenSize.width;
 
-  Tube(TubeType type, Image spriteImage, [Tube topTube]) {
+  Tube(TubeType type, Image spriteImage, [Tube bottomTube]) {
     _type = type;
-    _bottomTube = topTube;
+    _bottomTube = bottomTube;
     var sprite = Sprite.fromImage(
       spriteImage,
       width: SpriteDimensions.tubeWidth,

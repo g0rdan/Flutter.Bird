@@ -12,14 +12,16 @@ enum BirdStatus { waiting, flying}
 enum BirdFlyingStatus { up, down, none }
 
 class Bird extends PositionComponent with ComposedComponent {
+  int _counter = 0;
+  int _tickStep = 15;
+  Size _screenSize;
+  double _heightDiff = 0.0;
+  double _stepDiff = 0.0;
+
   BirdGround ground;
   BirdStatus status = BirdStatus.waiting;
   BirdFlyingStatus flyingStatus = BirdFlyingStatus.none;
-  int counter = 0;
-  int tickStep = 15;
-  Size _screenSize;
-  double heightDiff = 0.0;
-  double stepDiff = 0.0;
+  int achiveCounter;
 
   Bird(Image spriteImage, Size screenSize)
   {
@@ -64,11 +66,11 @@ class Bird extends PositionComponent with ComposedComponent {
 
   double getSpeedRatio(BirdFlyingStatus flyingStatus, int counter){
     if (flyingStatus == BirdFlyingStatus.up) {
-      var backwardCounter = tickStep - counter;
+      var backwardCounter = _tickStep - counter;
       return backwardCounter / 10.0;
     }
     if (flyingStatus == BirdFlyingStatus.down) {
-      var diffCounter = counter - tickStep;
+      var diffCounter = counter - _tickStep;
       return diffCounter / 10.0;
     }
     return 0.0;
@@ -76,24 +78,24 @@ class Bird extends PositionComponent with ComposedComponent {
 
   void birdMovingProcess(double t){
     if (status == BirdStatus.flying) {
-      counter++;
-      if (counter <= tickStep) {
+      _counter++;
+      if (_counter <= _tickStep) {
         flyingStatus = BirdFlyingStatus.up;
         this.ground.showAnimation = true;
         this.ground.angle -= 0.01;
-        this.ground.y -= t * 100 * getSpeedRatio(flyingStatus, counter);
+        this.ground.y -= t * 100 * getSpeedRatio(flyingStatus, _counter);
       }
       else {
         flyingStatus = BirdFlyingStatus.down;
         this.ground.showAnimation = false;
 
-        if (heightDiff == 0)
-          heightDiff = (_screenSize.height - this.ground.y);
-        if (stepDiff == 0)
-          stepDiff = this.ground.angle.abs() / (heightDiff / 10);
+        if (_heightDiff == 0)
+          _heightDiff = (_screenSize.height - this.ground.y);
+        if (_stepDiff == 0)
+          _stepDiff = this.ground.angle.abs() / (_heightDiff / 10);
           
-        this.ground.angle += stepDiff;
-        this.ground.y += t * 100 * getSpeedRatio(flyingStatus, counter);
+        this.ground.angle += _stepDiff;
+        this.ground.y += t * 100 * getSpeedRatio(flyingStatus, _counter);
       }
       
       this.ground.update(t);
@@ -103,22 +105,19 @@ class Bird extends PositionComponent with ComposedComponent {
   void jump() {
     Flame.audio.play('wing.wav');
     status = BirdStatus.flying;
-    counter = 0;
+    _counter = 0;
     this.ground.angle = 0;
   }
 }
 
 class BirdGround extends AnimationComponent {
-
-  bool _showAnimation = true;
-  bool get showAnimation => _showAnimation;
-  set showAnimation(bool value) => _showAnimation = value;
-
+  bool showAnimation = true;
+  
   BirdGround(Animation animation) : super(51, 36, animation);
 
   @override
   void update(double t){
-    if (_showAnimation) {
+    if (showAnimation) {
       super.update(t);
     }
   }
