@@ -6,6 +6,7 @@ import 'package:flutter_bird/game/bottom.dart';
 import 'package:flutter_bird/game/config.dart';
 import 'package:flutter_bird/game/gameover.dart';
 import 'package:flutter_bird/game/horizont.dart';
+import 'package:flutter_bird/game/scorer.dart';
 import 'package:flutter_bird/game/tube.dart';
 import 'package:flutter_bird/main.dart';
 
@@ -24,17 +25,11 @@ class FlutterBirdGame extends BaseGame {
   Tube thirdTopTube;
   Tube thirdBottomTube;
   Image _spriteImage;
+  Scorer _scorer;
   GameStatus status = GameStatus.waiting;
   double speed = 1.0;
   double xTubeOffset = 220;
   double xTubeStart = Singleton.instance.screenSize.width * 1.5;
-
-  int _achiveCounter = 0;
-  int get achiveCounter => _achiveCounter;
-  set achiveCounter(int number) {
-    Flame.audio.play('point.wav');
-    _achiveCounter = number;
-  }
 
   FlutterBirdGame(Image spriteImage, Size screenSize) {
     _spriteImage = spriteImage;
@@ -42,6 +37,7 @@ class FlutterBirdGame extends BaseGame {
     bird = Bird(spriteImage, screenSize);
     bottom = Bottom(spriteImage, screenSize);
     gameOver = GameOver(spriteImage, screenSize);
+    _scorer = Scorer(spriteImage, screenSize);
 
     firstBottomTube = Tube(TubeType.bottom, spriteImage);
     firstTopTube = Tube(TubeType.top, spriteImage, firstBottomTube);
@@ -62,7 +58,8 @@ class FlutterBirdGame extends BaseGame {
       ..add(thirdTopTube)
       ..add(thirdBottomTube)
       ..add(bottom)
-      ..add(gameOver);
+      ..add(gameOver)
+      ..add(_scorer);
   }
 
   void initPositions(Image spriteImage) {
@@ -79,17 +76,18 @@ class FlutterBirdGame extends BaseGame {
 
   @override
   void update(double t) {
-    if (status == GameStatus.playing) {
-      bird.update(t * speed);
-      bottom.update(t * speed);
-      firstBottomTube.update(t * speed);
-      firstTopTube.update(t * speed);
-      secondBottomTube.update(t * speed);
-      secondTopTube.update(t * speed);
-      thirdBottomTube.update(t * speed);
-      thirdTopTube.update(t * speed);
-    }
+    if (status != GameStatus.playing)
+      return;
 
+    bird.update(t * speed);
+    bottom.update(t * speed);
+    firstBottomTube.update(t * speed);
+    firstTopTube.update(t * speed);
+    secondBottomTube.update(t * speed);
+    secondTopTube.update(t * speed);
+    thirdBottomTube.update(t * speed);
+    thirdTopTube.update(t * speed);
+    
     var birdRect = bird.ground.toRect();
 
     if (check2ItemsCollision(birdRect, bottom.rect)){
@@ -123,7 +121,7 @@ class FlutterBirdGame extends BaseGame {
     if (checkIfBirdCrossedTube(firstTopTube) || 
         checkIfBirdCrossedTube(secondTopTube) || 
         checkIfBirdCrossedTube(thirdTopTube)) {
-      achiveCounter++;
+      _scorer.increase();
     }
   }
 
