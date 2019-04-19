@@ -19,13 +19,9 @@ class Scorer extends PositionComponent with ComposedComponent {
   Scorer(Image spriteImage, Size screenSize){
     _screenSize = screenSize;
     _initSprites(spriteImage);
-
-    _oneDigitGround = ScorerGround(_digits["0"]);
-    this._oneDigitGround.x = (screenSize.width - ComponentDimensions.numberWidth) / 2;
-    this._oneDigitGround.y = 80;
-    this..add(_oneDigitGround);
-  }
-  
+    _renderDefaultView();
+    }
+      
   void increase() {
     _score++;
     _render();
@@ -34,32 +30,16 @@ class Scorer extends PositionComponent with ComposedComponent {
 
   void _render(){
     var scoreStr = _score.toString();
-    switch (scoreStr.length) {
-      case 1:
-        _renderOneDigitScore(_score);
-        break;
-      case 2:
-        _renderTwoDigitScore(_score);
-        break;
-      case 3:
-        _renderThreeDigitScore(_score);
-        break;
-      default:
-        _removeScore();
+    var numberList = scoreStr.split("").reversed.toList();
+    for(var i = numberList.length - 1 ; i >= 0; i-- ) { 
+      var number = numberList[i];
+      if (i == 0)
+        _oneDigitGround.sprite = _digits[number.toString()];
+      if (i == 1)
+        _twoDigitGround.sprite = _digits[number.toString()];
+      if (i == 2)
+        _threeDigitGround.sprite = _digits[number.toString()];
     }
-  }
-
-  void _renderOneDigitScore([int score]){
-    _oneDigitGround.sprite = _digits[score.toString()];
-  }
-
-  void _renderTwoDigitScore([int score]){
-  }
-
-  void _renderThreeDigitScore([int score]){
-  }
-
-  void _removeScore(){
   }
 
   void _initSprites(Image spriteImage){
@@ -135,6 +115,21 @@ class Scorer extends PositionComponent with ComposedComponent {
         y: SpritesPostions.ninethNumberY,
       )
     });
+  }
+
+  void _renderDefaultView() {
+    double defaultY = 80;
+    var twoGroundX = (_screenSize.width - ComponentDimensions.numberWidth) / 2;
+    _twoDigitGround = ScorerGround(_digits["0"]);
+    this._twoDigitGround.x = twoGroundX;
+    this._twoDigitGround.y = defaultY;
+    _oneDigitGround = ScorerGround(_digits["0"]);
+    this._oneDigitGround.x = _twoDigitGround.toRect().right + 5;
+    this._oneDigitGround.y = defaultY;
+    _threeDigitGround = ScorerGround(_digits["0"]);
+    this._threeDigitGround.x = twoGroundX - ComponentDimensions.numberWidth - 5;
+    this._threeDigitGround.y = defaultY;
+    this..add(_oneDigitGround)..add(_twoDigitGround)..add(_threeDigitGround);
   }
 }
 
