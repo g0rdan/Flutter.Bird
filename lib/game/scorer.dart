@@ -28,6 +28,11 @@ class Scorer extends PositionComponent with ComposedComponent {
     Flame.audio.play('point.wav');
   }
 
+  void reset() {
+    _score = 0;
+    _render();
+  }
+
   void _render(){
     var scoreStr = _score.toString();
     var numberList = scoreStr.split("").reversed.toList();

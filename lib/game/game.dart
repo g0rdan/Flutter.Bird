@@ -87,7 +87,7 @@ class FlutterBirdGame extends BaseGame {
     secondTopTube.update(t * speed);
     thirdBottomTube.update(t * speed);
     thirdTopTube.update(t * speed);
-    
+
     var birdRect = bird.ground.toRect();
 
     if (check2ItemsCollision(birdRect, bottom.rect)){
@@ -157,6 +157,7 @@ class FlutterBirdGame extends BaseGame {
       case GameStatus.gameOver:
         status = GameStatus.waiting;
         initPositions(_spriteImage);
+        _scorer.reset();
         break;
       case GameStatus.playing:
         bird.jump();

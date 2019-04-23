@@ -65,6 +65,8 @@ class Tube extends PositionComponent with Resizable, ComposedComponent {
   }
 
   void setPosition(double x, double y) {
+    _hasBeenOnScreen = false;
+    crossedBird = false;
     this.ground.x = x + (_type == TubeType.top ? ComponentDimensions.tubeWidth : 0);
     setY();
   }

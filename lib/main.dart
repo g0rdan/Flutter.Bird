@@ -6,6 +6,7 @@ import 'package:flutter_bird/game/game.dart';
 
 void main() async {
   Flame.audio.disableLog();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   var image = await Flame.images.loadAll(["sprite.png"]);
   var screenSize = await Flame.util.initialDimensions();
   Singleton.instance.screenSize = screenSize;
