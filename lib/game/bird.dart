@@ -13,7 +13,7 @@ enum BirdFlyingStatus { up, down, none }
 
 class Bird extends PositionComponent with ComposedComponent {
   int _counter = 0;
-  int _tickStep = 15;
+  int _movingUpSteps = 15;
   Size _screenSize;
   double _heightDiff = 0.0;
   double _stepDiff = 0.0;
@@ -60,25 +60,9 @@ class Bird extends PositionComponent with ComposedComponent {
   }
 
   void update(double t) {
-    birdMovingProcess(t);
-  }
-
-  double getSpeedRatio(BirdFlyingStatus flyingStatus, int counter){
-    if (flyingStatus == BirdFlyingStatus.up) {
-      var backwardCounter = _tickStep - counter;
-      return backwardCounter / 10.0;
-    }
-    if (flyingStatus == BirdFlyingStatus.down) {
-      var diffCounter = counter - _tickStep;
-      return diffCounter / 10.0;
-    }
-    return 0.0;
-  }
-
-  void birdMovingProcess(double t){
     if (status == BirdStatus.flying) {
       _counter++;
-      if (_counter <= _tickStep) {
+      if (_counter <= _movingUpSteps) {
         flyingStatus = BirdFlyingStatus.up;
         this.ground.showAnimation = true;
         this.ground.angle -= 0.01;
@@ -96,9 +80,20 @@ class Bird extends PositionComponent with ComposedComponent {
         this.ground.angle += _stepDiff;
         this.ground.y += t * 100 * getSpeedRatio(flyingStatus, _counter);
       }
-      
       this.ground.update(t);
     }
+  }
+
+  double getSpeedRatio(BirdFlyingStatus flyingStatus, int counter){
+    if (flyingStatus == BirdFlyingStatus.up) {
+      var backwardCounter = _movingUpSteps - counter;
+      return backwardCounter / 10.0;
+    }
+    if (flyingStatus == BirdFlyingStatus.down) {
+      var diffCounter = counter - _movingUpSteps;
+      return diffCounter / 10.0;
+    }
+    return 0.0;
   }
 
   void jump() {
@@ -112,7 +107,8 @@ class Bird extends PositionComponent with ComposedComponent {
 class BirdGround extends AnimationComponent {
   bool showAnimation = true;
   
-  BirdGround(Animation animation) : super(51, 36, animation);
+  BirdGround(Animation animation) 
+    : super(ComponentDimensions.birdWidth, ComponentDimensions.birdHeight, animation);
 
   @override
   void update(double t){

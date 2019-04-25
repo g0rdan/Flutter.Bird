@@ -27,7 +27,6 @@ class FlutterBirdGame extends BaseGame {
   Image _spriteImage;
   Scorer _scorer;
   GameStatus status = GameStatus.waiting;
-  double speed = 1.0;
   double xTubeOffset = 220;
   double xTubeStart = Singleton.instance.screenSize.width * 1.5;
 
@@ -79,14 +78,14 @@ class FlutterBirdGame extends BaseGame {
     if (status != GameStatus.playing)
       return;
 
-    bird.update(t * speed);
-    bottom.update(t * speed);
-    firstBottomTube.update(t * speed);
-    firstTopTube.update(t * speed);
-    secondBottomTube.update(t * speed);
-    secondTopTube.update(t * speed);
-    thirdBottomTube.update(t * speed);
-    thirdTopTube.update(t * speed);
+    bird.update(t * Speed.GameSpeed);
+    bottom.update(t * Speed.GameSpeed);
+    firstBottomTube.update(t * Speed.GameSpeed);
+    firstTopTube.update(t * Speed.GameSpeed);
+    secondBottomTube.update(t * Speed.GameSpeed);
+    secondTopTube.update(t * Speed.GameSpeed);
+    thirdBottomTube.update(t * Speed.GameSpeed);
+    thirdTopTube.update(t * Speed.GameSpeed);
 
     var birdRect = bird.ground.toRect();
 

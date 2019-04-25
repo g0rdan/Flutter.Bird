@@ -82,7 +82,7 @@ class Tube extends PositionComponent with Resizable, ComposedComponent {
         crossedBird = false;
         _hasBeenOnScreen = false;
       }
-      this.ground.x -= t * 110;
+      this.ground.x -= t * Speed.GroundSpeed;
   }
 
   void setY() {

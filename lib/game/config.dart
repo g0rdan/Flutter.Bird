@@ -64,3 +64,8 @@ class ComponentPositions {
   static double birdX = 80;
   static double birdY = 250;
 }
+
+class Speed {
+  static double GroundSpeed = 120;
+  static double GameSpeed = 1.0;
+}

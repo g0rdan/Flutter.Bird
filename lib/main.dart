@@ -5,12 +5,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bird/game/game.dart';
 
 void main() async {
+  // initial settings
   Flame.audio.disableLog();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  var image = await Flame.images.loadAll(["sprite.png"]);
+  SystemChrome.setEnabledSystemUIOverlays([]);
+
+  var sprite = await Flame.images.loadAll(["sprite.png"]);
   var screenSize = await Flame.util.initialDimensions();
   Singleton.instance.screenSize = screenSize;
-  var flutterBirdGame = FlutterBirdGame(image[0], screenSize);
+  var flutterBirdGame = FlutterBirdGame(sprite[0], screenSize);
   runApp(MaterialApp(
     title: 'FlutterBirdGame',
     home: Scaffold(
@@ -20,17 +23,15 @@ void main() async {
 
   Flame.util.addGestureRecognizer(new TapGestureRecognizer()
     ..onTapDown = (TapDownDetails evt) => flutterBirdGame.onTap());
-
-  SystemChrome.setEnabledSystemUIOverlays([]);
 }
 
 class GameWrapper extends StatelessWidget {
-  final FlutterBirdGame tRexGame;
-  GameWrapper(this.tRexGame);
+  final FlutterBirdGame flutterBirdGame;
+  GameWrapper(this.flutterBirdGame);
 
   @override
   Widget build(BuildContext context) {
-    return tRexGame.widget;
+    return flutterBirdGame.widget;
   }
 }
 
