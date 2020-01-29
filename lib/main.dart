@@ -6,6 +6,7 @@ import 'package:flutter_bird/game/game.dart';
 
 void main() async {
   // initial settings
+  WidgetsFlutterBinding.ensureInitialized();
   Flame.audio.disableLog();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setEnabledSystemUIOverlays([]);
