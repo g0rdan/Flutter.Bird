@@ -17,13 +17,13 @@ void main() async {
   var flutterBirdGame = FlutterBirdGame(sprite[0], screenSize);
   runApp(MaterialApp(
     title: 'FlutterBirdGame',
-    home: Scaffold(
-      body: GameWrapper(flutterBirdGame),
+    home: GestureDetector(
+      onTapDown: (TapDownDetails evt) => flutterBirdGame.onTap(),
+      child: Scaffold(
+        body: GameWrapper(flutterBirdGame),
+      ),
     ),
   ));
-
-  Flame.util.addGestureRecognizer(new TapGestureRecognizer()
-    ..onTapDown = (TapDownDetails evt) => flutterBirdGame.onTap());
 }
 
 class GameWrapper extends StatelessWidget {
