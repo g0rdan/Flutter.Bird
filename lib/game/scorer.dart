@@ -34,17 +34,11 @@ class Scorer extends PositionComponent with ComposedComponent {
   }
 
   void _render(){
-    var scoreStr = _score.toString();
-    var numberList = scoreStr.split("").reversed.toList();
-    for(var i = numberList.length - 1 ; i >= 0; i-- ) { 
-      var number = numberList[i];
-      if (i == 0)
-        _oneDigitGround.sprite = _digits[number.toString()];
-      if (i == 1)
-        _twoDigitGround.sprite = _digits[number.toString()];
-      if (i == 2)
-        _threeDigitGround.sprite = _digits[number.toString()];
-    }
+    // Adds leading zeroes to 3 digits
+    var scoreStr = _score.toString().padLeft(3, '0');
+    _oneDigitGround.sprite = _digits[scoreStr[2]];
+    _twoDigitGround.sprite = _digits[scoreStr[1]];
+    _threeDigitGround.sprite = _digits[scoreStr[0]];
   }
 
   void _initSprites(Image spriteImage){
