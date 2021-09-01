@@ -1,3 +1,5 @@
+## The repository is not supported anymore and there won't be any updates. 
+
 # flutter_bird
 
 Clone of Flappy Bird game written on Flutter.
